@@ -9,22 +9,20 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600;700&display=swap"
         rel="stylesheet">
+
     <style>
         :root {
-            /* Darkened Palette */
-            --sage-green-darker: #2E3E38;
-            --blush-pink-darker: #8F5F5F;
-
-            /* Deepened from original pale blush */
+            --sage-green: #5F746A;
+            --blush-pink: #D4A3A3;
             --deep-sage: #3D4B44;
             --soft-cream: #FDFBFA;
+            --envelope-flap: #B5A894;
         }
 
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--soft-cream);
             color: #333;
-            /* Darker default text */
             margin: 0;
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
@@ -38,7 +36,6 @@
             perspective: 1000px;
         }
 
-        /* Animations */
         .fade-in {
             animation: fadeIn 1s ease-out forwards;
         }
@@ -69,30 +66,6 @@
             }
         }
 
-        .animate-bounce-slow {
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-
-            0%,
-            20%,
-            50%,
-            80%,
-            100% {
-                transform: translateY(0);
-            }
-
-            40% {
-                transform: translateY(-8px);
-            }
-
-            60% {
-                transform: translateY(-4px);
-            }
-        }
-
-        /* Responsive Image Frame */
         .image-container {
             width: 100%;
             max-width: 320px;
@@ -101,7 +74,7 @@
 
         @media (min-width: 768px) {
             .image-container {
-                max-width: 420px;
+                max-width: 400px;
             }
         }
 
@@ -114,6 +87,13 @@
                 font-size: 3.5rem !important;
             }
         }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--sage-green);
+            box-shadow: 0 0 0 2px rgba(95, 116, 106, 0.1);
+        }
     </style>
 </head>
 
@@ -123,9 +103,9 @@
     <div id="envelope-overlay"
         class="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2421] px-6 transition-opacity duration-700">
         <div onclick="openInvitation()"
-            class="relative w-full max-w-sm aspect-[4/3] cursor-pointer group perspective-1000 transform transition-transform hover:scale-[1.02] active:scale-95">
+            class="relative w-full max-sm aspect-[4/3] cursor-pointer group perspective-1000 transform transition-transform hover:scale-[1.02] active:scale-95">
             <div class="absolute inset-0 bg-[#F5F2ED] rounded-lg shadow-2xl border border-stone-300 overflow-hidden">
-                <div class="absolute top-0 left-0 w-full h-1/2 bg-[#E2D9C8] origin-top transition-transform duration-700"
+                <div class="absolute top-0 left-0 w-full h-1/2 bg-[var(--envelope-flap)] origin-top transition-transform duration-700"
                     style="clip-path: polygon(0 0, 100% 0, 50% 100%);">
                 </div>
 
@@ -133,7 +113,7 @@
                     <div class="p-2 md:p-3 rounded-full bg-white/60 border border-stone-200">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="text-stone-500 animate-pulse md:w-6 md:h-6">
+                            class="text-stone-700 animate-pulse md:w-6 md:h-6">
                             <path
                                 d="M21.2 8.4c.5.3.8.8.8 1.3v10c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V9.7c0-.5.3-1 .8-1.3L12 3l9.2 5.4Z" />
                             <path d="M22 10l-10 7L2 10" />
@@ -154,11 +134,11 @@
                     </div>
 
                     <div class="flex items-center gap-3 md:gap-4">
-                        <div class="w-8 md:w-12 h-px bg-stone-300"></div>
+                        <div class="w-8 md:w-12 h-px bg-stone-400"></div>
                         <p
-                            class="font-light text-stone-500 italic text-xs md:text-sm tracking-widest whitespace-nowrap">
+                            class="font-light text-stone-700 italic text-xs md:text-sm tracking-widest whitespace-nowrap">
                             Tap to Open</p>
-                        <div class="w-8 md:w-12 h-px bg-stone-300"></div>
+                        <div class="w-8 md:w-12 h-px bg-stone-400"></div>
                     </div>
                 </div>
             </div>
@@ -169,7 +149,7 @@
     <div id="main-content">
         <!-- Hero Section -->
         <section
-            class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-4 md:px-6 text-center">
+            class="relative min-h-[85vh] flex flex-col items-center justify-center overflow-hidden px-4 md:px-6 text-center">
             <div class="absolute top-0 left-0 w-full flex justify-between px-2 md:px-12 pointer-events-none opacity-15">
                 <div
                     class="w-32 h-32 md:w-64 md:h-64 -translate-x-6 -translate-y-6 md:-translate-x-12 md:-translate-y-12">
@@ -185,46 +165,30 @@
                 </div>
             </div>
 
-            <div class="z-10 flex flex-col items-center max-w-4xl w-full slide-up py-12">
-                <div class="flex items-center gap-2 md:gap-4 mb-6 md:mb-8 w-full justify-center px-4">
+            <div class="z-10 flex flex-col items-center max-w-4xl w-full slide-up">
+                <div class="flex items-center gap-2 md:gap-4 mb-4 md:mb-6 w-full justify-center">
                     <div class="h-px flex-1 max-w-[40px] md:max-w-[60px] bg-stone-300"></div>
-                    <span
-                        class="text-[8px] md:text-xs font-bold tracking-[0.3em] md:tracking-[0.5em] uppercase text-stone-500 whitespace-nowrap">A
-                        Centennial Milestone</span>
+                    <span class="text-[8px] md:text-xs font-bold tracking-[0.3em] uppercase text-stone-500">A Centennial
+                        Milestone</span>
                     <div class="h-px flex-1 max-w-[40px] md:max-w-[60px] bg-stone-300"></div>
                 </div>
 
-                <h1 class="text-5xl md:text-9xl font-serif mb-4 md:mb-6 leading-tight flex flex-col xs-h1"
+                <h1 class="text-5xl md:text-9xl font-serif mb-4 leading-tight flex flex-col xs-h1"
                     style="color: #4A5B53;">
                     Maudeline
                     <span style="color: #D4A3A3;" class="italic font-light">Mullings</span>
                 </h1>
 
-                <div class="flex items-center justify-center gap-3 mb-8 md:mb-10">
-                    <div class="w-1.5 h-1.5 rounded-full" style="background-color: #5F746A;"></div>
-                    <p
-                        class="text-sm md:text-xl font-light tracking-[0.2em] md:tracking-[0.3em] text-stone-500 uppercase">
-                        Her 96th Birthday
-                    </p>
-                    <div class="w-1.5 h-1.5 rounded-full" style="background-color: #5F746A;"></div>
-                </div>
-
-                <div class="flex flex-col items-center gap-2 mb-10 md:mb-12">
-                    <span
-                        class="text-xl md:text-3xl font-serif text-stone-800 italic border-b border-stone-200 pb-1 md:pb-2">
-                        Sunday, July 12, 2026
-                    </span>
-                    <span class="text-[10px] md:text-xs font-bold tracking-[0.3em] md:tracking-[0.4em] uppercase"
-                        style="color: #5F746A;">
-                        Unity Hall · Montego Bay
-                    </span>
+                <div class="flex flex-col items-center gap-2 mb-8">
+                    <span class="text-xl md:text-3xl font-serif text-stone-800 italic">Sunday, July 12, 2026</span>
+                    <span class="text-[10px] md:text-xs font-bold tracking-[0.3em] uppercase"
+                        style="color: #5F746A;">Unity Hall · Montego Bay</span>
                 </div>
 
                 <button onclick="scrollToNext()"
-                    class="p-4 md:p-5 rounded-full border border-stone-200 bg-white hover:shadow-xl transition-all active:scale-90 group">
+                    class="p-4 rounded-full border border-stone-200 bg-white hover:shadow-xl transition-all active:scale-90">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="#5F746A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="animate-bounce-slow md:w-7 md:h-7">
+                        stroke="#5F746A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="m6 9 6 6 6-6" />
                     </svg>
                 </button>
@@ -232,25 +196,21 @@
         </section>
 
         <!-- Portrait Section -->
-        <section class="py-16 md:py-24 px-4 md:px-6 max-w-5xl mx-auto flex flex-col items-center">
+        <section id="portrait" class="py-4 md:py-8 px-4 md:px-6 max-w-5xl mx-auto flex flex-col items-center">
             <div class="relative group flex flex-col items-center w-full">
                 <div
                     class="absolute -inset-4 md:-inset-6 border border-stone-200 rounded-[30px] md:rounded-[50px] opacity-40 pointer-events-none">
                 </div>
 
                 <div
-                    class="relative image-container aspect-[3/4] rounded-[30px] md:rounded-[40px] overflow-hidden shadow-2xl border-[8px] md:border-[12px] border-white z-10">
+                    class="relative image-container aspect-[3/4] rounded-[30px] md:rounded-[40px] overflow-hidden shadow-2xl border-[8px] border-white z-10">
                     <img src="Images/Maudeline.jpeg"
-                        alt="Maudeline Mullings"
-                        class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                        onerror="this.src='https://via.placeholder.com/600x800?text=Maudeline'">
+                        alt="Maudeline Mullings" class="w-full h-full object-cover">
                 </div>
 
-                <div class="absolute -bottom-8 md:-bottom-10 flex flex-col items-center z-20">
-                    <div
-                        class="bg-white px-6 md:px-10 py-3 md:py-5 rounded-xl md:rounded-2xl shadow-xl border border-stone-100 text-center">
-                        <p
-                            class="text-[8px] md:text-[10px] font-bold tracking-[0.2em] md:tracking-[0.3em] uppercase text-stone-500 mb-0.5">
+                <div class="absolute -bottom-6 md:-bottom-8 flex flex-col items-center z-20">
+                    <div class="bg-white px-6 py-3 md:py-4 rounded-xl shadow-xl border border-stone-100 text-center">
+                        <p class="text-[8px] md:text-[10px] font-bold tracking-[0.2em] uppercase text-stone-500">
                             Matriarch Since</p>
                         <p class="text-2xl md:text-3xl font-serif" style="color: #4A5B53;">1930</p>
                     </div>
@@ -258,102 +218,87 @@
             </div>
 
             <p
-                class="mt-20 md:mt-24 text-center text-stone-600 italic font-light max-w-lg leading-relaxed text-lg md:text-xl px-4">
+                class="mt-12 md:mt-16 text-center text-stone-600 italic font-light max-w-lg leading-relaxed text-lg md:text-xl px-4">
                 "A legacy of grace, a heart of gold, and a spirit that has inspired generations for nearly a century."
             </p>
         </section>
 
         <!-- Details Grid -->
-        <section class="py-16 md:py-24 px-4 md:px-6 max-w-5xl mx-auto grid md:grid-cols-2 gap-6 md:gap-10">
+        <section class="py-12 md:py-20 px-4 md:px-6 max-w-5xl mx-auto grid md:grid-cols-2 gap-6 md:gap-10">
             <div
-                class="p-8 md:p-12 rounded-[30px] md:rounded-[50px] bg-white border border-stone-100 shadow-sm flex flex-col items-center text-center">
-                <div class="mb-6 md:mb-8 p-4 md:p-5 rounded-full" style="background-color: #D4A3A322;">
+                class="p-8 rounded-[30px] md:rounded-[50px] bg-white border border-stone-100 shadow-sm flex flex-col items-center text-center">
+                <div class="mb-6 p-4 rounded-full" style="background-color: #D4A3A322;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="#5F746A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="md:w-8 md:h-8">
+                        stroke="#5F746A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
                         <line x1="16" x2="16" y1="2" y2="6" />
                         <line x1="8" x2="8" y1="2" y2="6" />
                         <line x1="3" x2="21" y1="10" y2="10" />
                     </svg>
                 </div>
-                <h4
-                    class="text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] md:tracking-[0.4em] mb-2 md:mb-4 text-stone-400">
-                    The Occasion</h4>
                 <p class="text-2xl md:text-3xl font-serif mb-1 text-stone-800">July 12th, 2026</p>
-                <p class="text-stone-600 text-base md:text-lg">Reception at 2:00 PM</p>
+                <p class="text-stone-600">Reception at 12:00 PM</p>
             </div>
 
             <div
-                class="p-8 md:p-12 rounded-[30px] md:rounded-[50px] bg-white border border-stone-100 shadow-sm flex flex-col items-center text-center">
-                <div class="mb-6 md:mb-8 p-4 md:p-5 rounded-full" style="background-color: #5F746A22;">
+                class="p-8 rounded-[30px] md:rounded-[50px] bg-white border border-stone-100 shadow-sm flex flex-col items-center text-center">
+                <div class="mb-6 p-4 rounded-full" style="background-color: #5F746A22;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="#5F746A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="md:w-8 md:h-8">
+                        stroke="#5F746A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
                         <circle cx="12" cy="10" r="3" />
                     </svg>
                 </div>
-                <h4
-                    class="text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] md:tracking-[0.4em] mb-2 md:mb-4 text-stone-400">
-                    The Venue</h4>
                 <p class="text-2xl md:text-3xl font-serif mb-1 text-stone-800">Unity Hall</p>
-                <p class="text-stone-700 text-base md:text-lg">2 Rhynie Drive, MoBay</p>
+                <p class="text-stone-700">2 Rhynie Drive, MoBay</p>
                 <a href="https://www.google.com/maps/search/?api=1&query=2+Rhynie+Drive+Unity+Hall+Montego+Bay"
                     target="_blank"
-                    class="mt-4 md:mt-6 text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] border-b-2 pb-1 transition-all border-[#D4A3A3] text-[#5F746A] hover:opacity-70">
-                    Get Directions
-                </a>
+                    class="mt-4 text-[10px] uppercase tracking-[0.2em] border-b-2 pb-1 border-[#D4A3A3] text-[#5F746A]">Get
+                    Directions</a>
             </div>
         </section>
 
         <!-- RSVP Section -->
         <section class="py-24 md:py-32 px-4 md:px-6" style="background-color: #5F746A08;">
-            <div class="max-w-3xl mx-auto text-center flex flex-col items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
-                    stroke="#D4A3A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="mb-8 md:mb-12 opacity-40 md:w-16 md:h-16">
-                    <path
-                        d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-                </svg>
-                <h2 class="text-4xl md:text-7xl font-serif mb-6 md:mb-10 text-stone-800 leading-tight">Will you join us?
-                </h2>
-                <p
-                    class="text-lg md:text-xl text-stone-600 leading-relaxed mb-12 md:mb-16 max-w-xl font-light italic px-4">
-                    Your presence would be the greatest gift to Maudeline as we celebrate this extraordinary milestone.
-                </p>
+            <div class="max-w-xl mx-auto text-center">
+                <h2 class="text-4xl md:text-6xl font-serif mb-6 text-stone-800">Will you join us?</h2>
+                <p class="text-lg text-stone-600 italic mb-10 px-4">Your presence would be the greatest gift.</p>
 
-                <div id="rsvp-actions" class="flex flex-col sm:flex-row gap-4 md:gap-6 w-full justify-center px-4">
-                    <button onclick="handleRSVP()"
-                        class="w-full sm:w-auto px-8 md:px-16 py-5 md:py-6 rounded-full text-white font-bold transition-all hover:scale-105 shadow-xl hover:shadow-stone-200 active:scale-95 bg-[#4A5B53] text-sm md:text-base">
-                        Accept with Pleasure
-                    </button>
-                    <button onclick="handleDecline()"
-                        class="w-full sm:w-auto px-8 md:px-16 py-5 md:py-6 rounded-full border border-stone-300 font-bold text-stone-500 hover:bg-white transition-all text-sm md:text-base">
-                        Decline with Regret
-                    </button>
+                <div id="rsvp-form"
+                    class="bg-white p-8 md:p-12 rounded-[40px] shadow-xl border border-stone-100 text-left">
+                    <div class="space-y-6">
+                        <div>
+                            <label
+                                class="block text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-2">Guest
+                                Name(s)</label>
+                            <input type="text" id="guest-name" placeholder="Enter your name"
+                                class="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-4 text-stone-800">
+                        </div>
+                        <div>
+                            <label
+                                class="block text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-2">Message
+                                for Maudeline (Optional)</label>
+                            <textarea id="guest-message" placeholder="A brief note..."
+                                class="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-4 text-stone-800 h-24"></textarea>
+                        </div>
+                        <div class="pt-4">
+                            <button onclick="submitRSVP('attending')" id="btn-accept"
+                                class="w-full bg-[#4A5B53] text-white py-5 rounded-xl font-bold transition-transform hover:scale-[1.01] active:scale-95 shadow-lg shadow-stone-200">
+                                Accept with Pleasure
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <div id="rsvp-success"
-                    class="hidden bg-white p-8 md:p-16 rounded-[40px] md:rounded-[60px] shadow-2xl border border-stone-100 fade-in w-full max-w-xl mx-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
-                        stroke="#5F746A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="mx-auto mb-4 md:mb-6">
-                        <path
-                            d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
-                        <path d="M5 3v4" />
-                        <path d="M19 17v4" />
-                        <path d="M3 5h4" />
-                        <path d="M17 19h4" />
-                    </svg>
-                    <p class="text-2xl md:text-3xl font-serif text-stone-800 mb-2 md:mb-4">A Sincere Thank You</p>
-                    <p class="text-stone-500 tracking-widest uppercase text-[10px] md:text-sm font-bold">Your attendance
-                        is confirmed</p>
+                    class="hidden bg-white p-12 rounded-[40px] shadow-2xl border border-stone-100 fade-in">
+                    <p class="text-2xl font-serif text-stone-800 mb-2">A Sincere Thank You</p>
+                    <p class="text-[#5F746A] tracking-widest uppercase text-xs font-bold">Your response has been saved
+                    </p>
                 </div>
 
-                <!-- Darkened Footer Detail -->
                 <div
-                    class="mt-16 md:mt-24 flex items-center justify-center gap-3 md:gap-4 text-stone-600 text-[10px] md:text-xs tracking-[0.3em] md:tracking-[0.5em] uppercase font-bold px-4">
+                    class="mt-20 flex items-center justify-center gap-4 text-stone-600 text-[10px] md:text-xs tracking-[0.4em] uppercase font-bold px-4">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                         class="text-[#5F746A]">
@@ -361,21 +306,71 @@
                         <circle cx="6" cy="18" r="3" />
                         <circle cx="18" cy="16" r="3" />
                     </svg>
-                    <span class="text-center">Tea, Toast, & Shared Stories</span>
+                    <span>Tea, Toast, & Shared Stories</span>
                 </div>
             </div>
         </section>
 
-        <!-- Darkened Footer Text -->
-        <footer class="py-12 md:py-20 text-center px-6">
-            <div class="h-px w-16 md:w-24 bg-stone-300 mx-auto mb-6 md:mb-8"></div>
-            <p
-                class="text-stone-600 text-[8px] md:text-[10px] tracking-[0.4em] md:tracking-[0.6em] uppercase font-bold">
-                Maudeline · 96 Years of Grace</p>
+        <footer class="py-12 text-center px-6">
+            <p class="text-stone-600 text-[8px] md:text-[10px] tracking-[0.4em] uppercase font-bold">Maudeline · 96
+                Years of Grace</p>
         </footer>
     </div>
 
     <script>
+        // Supabase Settings
+        const supabaseUrl = 'https://ywfkkijngojdoqxunryx.supabase.co';
+
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl3ZmtraWpuZ29qZG9xeHVucnl4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MTM0NjcsImV4cCI6MjA4NDA4OTQ2N30.goooK4C1g0nKIAdKUBEY14mUXMrv5dXKFhDKBMzP_JE';
+
+        async function submitRSVP(status) {
+            const nameInput = document.getElementById('guest-name');
+            const messageInput = document.getElementById('guest-message');
+            const btnAccept = document.getElementById('btn-accept');
+
+            const name = nameInput.value.trim();
+            const message = messageInput.value.trim();
+
+            if (!name) {
+                nameInput.classList.add('border-red-300');
+                nameInput.focus();
+                return;
+            }
+
+            btnAccept.disabled = true;
+            btnAccept.textContent = "Saving...";
+
+            try {
+                // Using raw fetch to bypass possible library-specific fetch issues in some environments
+                const response = await fetch(`${supabaseUrl}/rest/v1/rsvps`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': supabaseKey,
+                        'Authorization': `Bearer ${supabaseKey}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        message: message,
+                        status: status
+                    })
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json();
+                    throw new Error(errData.message || 'Server error');
+                }
+
+                document.getElementById('rsvp-form').classList.add('hidden');
+                document.getElementById('rsvp-success').classList.remove('hidden');
+            } catch (err) {
+                console.error('RSVP submission error:', err);
+                btnAccept.textContent = "Connection error. Tap to retry";
+                btnAccept.disabled = false;
+            }
+        }
+
         function openInvitation() {
             const overlay = document.getElementById('envelope-overlay');
             const content = document.getElementById('main-content');
@@ -388,32 +383,8 @@
         }
 
         function scrollToNext() {
-            window.scrollTo({
-                top: window.innerHeight,
-                behavior: 'smooth'
-            });
+            document.getElementById('portrait').scrollIntoView({ behavior: 'smooth' });
         }
-
-        function handleRSVP() {
-            document.getElementById('rsvp-actions').classList.add('hidden');
-            document.getElementById('rsvp-success').classList.remove('hidden');
-        }
-
-        function handleDecline() {
-            const btn = event.target;
-            btn.textContent = "Thank you";
-            btn.disabled = true;
-            btn.classList.add('opacity-50', 'cursor-not-allowed');
-            const acceptBtn = document.querySelector('#rsvp-actions button:first-child');
-            if (acceptBtn) acceptBtn.classList.add('hidden');
-        }
-
-        function setVh() {
-            let vh = window.innerHeight * 0.01;
-            document.documentElement.style.setProperty('--vh', `${vh}px`);
-        }
-        window.addEventListener('resize', setVh);
-        setVh();
     </script>
 </body>
 
