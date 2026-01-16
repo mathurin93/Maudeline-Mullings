@@ -12,10 +12,12 @@
 
     <style>
         :root {
-            --sage-green: #5F746A;
-            --blush-pink: #D4A3A3;
-            --deep-sage: #3D4B44;
+            --sage-green: #4A5B53;
+            --vibrant-pink: #E88B8B;
+            --soft-yellow: #F4D35E;
+            --deep-sage: #2C3632;
             --soft-cream: #FDFBFA;
+            --gold: #C5A059;
             --envelope-flap: #B5A894;
         }
 
@@ -32,11 +34,36 @@
             font-family: 'Playfair Display', serif;
         }
 
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(135deg, #4A5B53 0%, #C5A059 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Card Framing Effect */
+        .card-frame {
+            position: relative;
+            background: white;
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+            z-index: 10;
+        }
+        
+        .card-frame::before {
+            content: '';
+            position: absolute;
+            inset: 8px;
+            border: 1px solid rgba(197, 160, 89, 0.15);
+            pointer-events: none;
+            border-radius: inherit;
+        }
+
         /* Scroll Animation Utility */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .reveal.active {
@@ -44,38 +71,52 @@
             transform: translateY(0);
         }
 
-        .perspective-1000 {
-            perspective: 1000px;
-        }
-
         #main-content {
             display: none;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(232, 139, 139, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(74, 91, 83, 0.05) 0px, transparent 50%);
         }
 
-        @media (max-width: 640px) {
-            .hero-min-height {
-                min-height: 60vh;
+        /* Balloon Falling Animation */
+        @keyframes balloonFall {
+            0% { 
+                transform: translateY(-20vh) translateX(0) rotate(0deg); 
+                opacity: 0; 
             }
-
-            .xs-h1 {
-                font-size: 3.25rem !important;
-                line-height: 1.05;
+            10% { opacity: 0.6; }
+            50% { transform: translateY(50vh) translateX(20px) rotate(10deg); }
+            90% { opacity: 0.6; }
+            100% { 
+                transform: translateY(120vh) translateX(-20px) rotate(-10deg); 
+                opacity: 0; 
             }
         }
 
-        input:focus,
-        textarea:focus {
-            outline: none;
-            border-color: var(--sage-green);
-            box-shadow: 0 0 0 2px rgba(95, 116, 106, 0.1);
+        .floating-balloon {
+            position: fixed;
+            top: -200px; /* Start above the viewport */
+            animation: balloonFall 20s linear infinite;
+            pointer-events: none;
+            z-index: -1;
         }
 
-        /* Smooth reveal for images */
+        /* Button Refinement */
+        .btn-sage {
+            background-color: var(--sage-green);
+            transition: all 0.3s ease;
+        }
+        .btn-sage:hover {
+            background-color: var(--deep-sage);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(44, 54, 50, 0.2);
+        }
+
+        /* Image Mask Reveal */
         .img-reveal {
             clip-path: inset(100% 0 0 0);
-            transition: clip-path 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+            transition: clip-path 1.4s cubic-bezier(0.77, 0, 0.175, 1);
         }
-
         .img-reveal.active {
             clip-path: inset(0 0 0 0);
         }
@@ -88,41 +129,30 @@
     <div id="envelope-overlay"
         class="fixed inset-0 z-50 flex items-center justify-center bg-[#1F2421] px-4 transition-opacity duration-700">
         <div onclick="openInvitation()"
-            class="relative w-full max-w-sm aspect-[4/3] cursor-pointer group perspective-1000 transform transition-transform hover:scale-[1.02] active:scale-95">
+            class="relative w-full max-sm:max-w-[280px] max-w-sm aspect-[4/3] cursor-pointer group perspective-1000 transform transition-transform hover:scale-[1.02] active:scale-95">
             <div class="absolute inset-0 bg-[#F5F2ED] rounded-lg shadow-2xl border border-stone-300 overflow-hidden">
                 <div class="absolute top-0 left-0 w-full h-1/2 bg-[var(--envelope-flap)] origin-top transition-transform duration-700"
                     style="clip-path: polygon(0 0, 100% 0, 50% 100%);">
                 </div>
-
                 <div class="absolute inset-0 flex flex-col items-center justify-between py-6 md:py-12 px-6">
                     <div class="p-2 md:p-3 rounded-full bg-white/60 border border-stone-200">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="text-stone-700 animate-pulse md:w-6 md:h-6">
-                            <path
-                                d="M21.2 8.4c.5.3.8.8.8 1.3v10c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V9.7c0-.5.3-1 .8-1.3L12 3l9.2 5.4Z" />
+                            class="text-stone-700 animate-pulse">
+                            <path d="M21.2 8.4c.5.3.8.8.8 1.3v10c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V9.7c0-.5.3-1 .8-1.3L12 3l9.2 5.4Z" />
                             <path d="M22 10l-10 7L2 10" />
                         </svg>
                     </div>
-
                     <div class="flex flex-col items-center gap-2 md:gap-6">
-                        <p
-                            class="font-serif text-sm md:text-xl text-stone-700 tracking-[0.3em] md:tracking-[0.4em] uppercase">
-                            Special</p>
-                        <div
-                            class="w-14 h-14 md:w-20 md:h-20 bg-[#D4A3A3] rounded-full flex items-center justify-center shadow-lg border-4 border-white group-hover:scale-110 transition-transform duration-500 z-10 relative">
+                        <p class="font-serif text-sm md:text-xl text-stone-700 tracking-[0.3em] md:tracking-[0.4em] uppercase">Special</p>
+                        <div class="w-14 h-14 md:w-20 md:h-20 bg-[#D4A3A3] rounded-full flex items-center justify-center shadow-lg border-4 border-white group-hover:scale-110 transition-transform duration-500 z-10 relative">
                             <span class="text-white font-serif text-xl md:text-3xl font-bold">96</span>
                         </div>
-                        <p
-                            class="font-serif text-sm md:text-xl text-stone-700 tracking-[0.3em] md:tracking-[0.4em] uppercase">
-                            Invitation</p>
+                        <p class="font-serif text-sm md:text-xl text-stone-700 tracking-[0.3em] md:tracking-[0.4em] uppercase">Invitation</p>
                     </div>
-
                     <div class="flex items-center gap-3 md:gap-4">
                         <div class="w-8 md:w-12 h-px bg-stone-400"></div>
-                        <p
-                            class="font-light text-stone-700 italic text-xs md:text-sm tracking-widest whitespace-nowrap">
-                            Tap to Open</p>
+                        <p class="font-light text-stone-700 italic text-xs md:text-sm tracking-widest">Tap to Open</p>
                         <div class="w-8 md:w-12 h-px bg-stone-400"></div>
                     </div>
                 </div>
@@ -132,46 +162,40 @@
 
     <!-- Main Content -->
     <div id="main-content">
+        <!-- Falling Balloons Background -->
+        <div id="balloon-container" class="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+            <!-- Balloons will be injected by JS -->
+        </div>
+
         <!-- Hero Section -->
-        <section
-            class="relative hero-min-height flex flex-col items-center justify-center overflow-hidden px-4 md:px-6 text-center">
-            <div class="absolute top-0 left-0 w-full flex justify-between px-2 md:px-12 pointer-events-none opacity-10">
-                <div class="w-24 h-24 md:w-64 md:h-64 -translate-x-4 -translate-y-4">
-                    <svg viewBox="0 0 200 200" fill="#5F746A" class="w-full h-full">
-                        <path d="M0,0 Q100,0 100,100 T200,200 L0,200 Z" />
-                    </svg>
-                </div>
-                <div class="w-24 h-24 md:w-64 md:h-64 translate-x-4 -translate-y-4">
-                    <svg viewBox="0 0 200 200" fill="#D4A3A3" class="w-full h-full transform scale-x-[-1]">
-                        <path d="M0,0 Q100,0 100,100 T200,200 L0,200 Z" />
-                    </svg>
-                </div>
-            </div>
-
-            <div class="z-10 flex flex-col items-center max-w-4xl w-full reveal active mt-8 md:mt-0">
-                <div class="flex items-center gap-2 md:gap-4 mb-3 md:mb-6 w-full justify-center">
-                    <div class="h-px flex-1 max-w-[30px] md:max-w-[60px] bg-stone-300"></div>
-                    <span class="text-[7px] md:text-xs font-bold tracking-[0.3em] uppercase text-stone-500">A Centennial
-                        Milestone</span>
-                    <div class="h-px flex-1 max-w-[30px] md:max-w-[60px] bg-stone-300"></div>
+        <section class="relative min-h-screen flex flex-col items-center justify-center px-4 text-center">
+            <div class="z-10 flex flex-col items-center max-w-4xl w-full reveal active">
+                <div class="mb-6 relative">
+                    <div class="absolute -inset-8 border border-gold opacity-20 rounded-full scale-110"></div>
+                    <div class="flex items-center gap-4 justify-center">
+                        <div class="h-px w-8 md:w-16 bg-stone-300"></div>
+                        <span class="text-[8px] md:text-xs font-bold tracking-[0.4em] uppercase text-stone-500">The Celebration of</span>
+                        <div class="h-px w-8 md:w-16 bg-stone-300"></div>
+                    </div>
                 </div>
 
-                <h1 class="text-5xl md:text-9xl font-serif mb-2 md:mb-4 leading-none flex flex-col xs-h1"
-                    style="color: #4A5B53;">
-                    Maudeline
-                    <span style="color: #D4A3A3;" class="italic font-light">Mullings</span>
+                <h1 class="text-6xl md:text-[10rem] font-serif mb-4 leading-none">
+                    <span class="text-gradient block">Maudeline</span>
+                    <span style="color: #E88B8B;" class="italic font-light">Mullings</span>
                 </h1>
 
-                <div class="flex flex-col items-center gap-1 md:gap-2 mb-4 md:mb-8">
-                    <span class="text-lg md:text-3xl font-serif text-stone-800 italic">Sunday, July 12, 2026</span>
-                    <span class="text-[9px] md:text-xs font-bold tracking-[0.3em] uppercase"
-                        style="color: #5F746A;">Unity Hall · Montego Bay</span>
+                <div class="mt-8 flex flex-col items-center gap-4">
+                    <span class="text-xl md:text-4xl font-serif text-stone-800 italic">Sunday, July 12, 2026</span>
+                    <div class="flex items-center gap-3">
+                        <span class="w-2 h-2 rounded-full bg-gold opacity-50"></span>
+                        <span class="text-[10px] md:text-sm font-bold tracking-[0.4em] uppercase text-sage-green">Unity Hall · Montego Bay</span>
+                        <span class="w-2 h-2 rounded-full bg-gold opacity-50"></span>
+                    </div>
                 </div>
 
-                <button onclick="scrollToNext()"
-                    class="p-3 md:p-4 rounded-full border border-stone-200 bg-white hover:shadow-xl transition-all active:scale-90">
+                <button onclick="scrollToNext()" class="mt-10 p-3 md:p-5 rounded-full border border-stone-200 bg-white shadow-lg active:scale-90 transition-transform">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                        stroke="#5F746A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        stroke="#4A5B53" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="m6 9 6 6 6-6" />
                     </svg>
                 </button>
@@ -179,72 +203,74 @@
         </section>
 
         <!-- Portrait Section -->
-        <section id="portrait" class="py-2 md:py-8 px-4 md:px-6 max-w-5xl mx-auto flex flex-col items-center">
-            <div class="relative group flex flex-col items-center w-full reveal">
-                <div
-                    class="absolute -inset-2 md:-inset-6 border border-stone-200 rounded-[20px] md:rounded-[50px] opacity-40 pointer-events-none">
-                </div>
+        <section id="portrait" class="py-16 md:py-24 px-4 max-w-6xl mx-auto flex flex-col items-center">
+            <div class="relative w-full flex flex-col items-center reveal">
+                <div class="absolute -top-10 -left-10 w-20 h-20 border-t-2 border-l-2 border-gold/30 hidden md:block"></div>
+                <div class="absolute -bottom-10 -right-10 w-20 h-20 border-b-2 border-r-2 border-gold/30 hidden md:block"></div>
 
-                <div
-                    class="relative w-full max-w-[300px] md:max-w-[400px] aspect-[3/4] rounded-[20px] md:rounded-[40px] overflow-hidden shadow-xl border-[6px] md:border-[8px] border-white z-10">
+                <div class="relative w-full max-w-[280px] md:max-w-[450px] aspect-[3/4] rounded-[30px] md:rounded-[60px] overflow-hidden shadow-2xl border-[8px] md:border-[12px] border-white z-10 group">
                     <img src="Images/Maudeline.jpeg" alt="Maudeline Mullings"
-                        class="w-full h-full object-cover img-reveal">
+                        class="w-full h-full object-cover img-reveal group-hover:scale-110 transition-transform duration-1000">
                 </div>
 
-                <div class="absolute -bottom-4 md:-bottom-8 flex flex-col items-center z-20 reveal">
-                    <div
-                        class="bg-white px-4 md:px-6 py-2 md:py-4 rounded-lg md:rounded-xl shadow-lg border border-stone-100 text-center">
-                        <p class="text-[7px] md:text-[10px] font-bold tracking-[0.2em] uppercase text-stone-500">
-                            Matriarch Since</p>
-                        <p class="text-xl md:text-3xl font-serif" style="color: #4A5B53;">1930</p>
+                <div class="absolute -bottom-6 flex flex-col items-center z-20 reveal">
+                    <div class="bg-white px-6 md:px-8 py-3 md:py-4 rounded-2xl shadow-xl border border-stone-100 text-center">
+                        <p class="text-[8px] md:text-[10px] font-bold tracking-[0.3em] uppercase text-stone-400 mb-1">Legacy of Love</p>
+                        <p class="text-xl md:text-4xl font-serif text-gradient">96 Remarkable Years</p>
                     </div>
                 </div>
             </div>
 
-            <div class="reveal mt-12 md:mt-20 max-w-2xl text-center px-4">
-                <h3 class="font-serif text-2xl md:text-4xl text-stone-800 mb-6 italic">A Lifetime of Love</h3>
-                <p class="text-stone-600 font-light leading-relaxed text-base md:text-lg mb-4">
-                    Ninety-six years is more than a measurement of time; it is a tapestry woven with threads of
-                    resilience, unwavering faith, and boundless kindness. From her early days to her present role as our
-                    family's North Star, Maudeline has taught us that the secret to a long life is a heart that remains
-                    open to joy.
+            <div class="reveal mt-20 md:mt-32 max-w-3xl text-center px-4">
+                <div class="mb-8 flex justify-center">
+                    <svg width="48" height="48" viewBox="0 0 100 100" class="text-gold">
+                        <path fill="currentColor" d="M50 10 C60 35 90 40 50 60 C10 40 40 35 50 10" />
+                        <circle cx="50" cy="65" r="4" fill="currentColor" />
+                        <path fill="none" stroke="currentColor" stroke-width="2" d="M30 60 Q50 95 70 60" />
+                    </svg>
+                </div>
+                <h3 class="font-serif text-3xl md:text-5xl text-stone-800 mb-6 italic">The Essence of Grace</h3>
+                <p class="text-stone-600 font-light leading-relaxed md:leading-loose text-base md:text-xl">
+                    Ninety-six years is a grand tapestry of resilience, faith, and kindness. 
+                    Maudeline remains our family's North Star, teaching us daily that the secret 
+                    to a long, beautiful life is a heart that never tires of giving and a spirit 
+                    that finds music in the simplest moments.
                 </p>
-                <div class="w-12 h-px bg-[#D4A3A3] mx-auto mt-8"></div>
+                <div class="w-16 h-px bg-gold/30 mx-auto mt-10"></div>
             </div>
         </section>
 
         <!-- Details Grid -->
-        <section class="py-12 md:py-24 px-4 md:px-6 max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-10">
-            <div
-                class="reveal p-6 md:p-10 rounded-[24px] md:rounded-[50px] bg-white border border-stone-100 shadow-sm flex flex-col items-center text-center">
-                <div class="mb-4 md:mb-6 p-3 md:p-4 rounded-full" style="background-color: #D4A3A322;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="#5F746A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
-                        <line x1="16" x2="16" y1="2" y2="6" />
-                        <line x1="8" x2="8" y1="2" y2="6" />
-                        <line x1="3" x2="21" y1="10" y2="10" />
-                    </svg>
+        <section class="py-16 md:py-24 px-4 max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16">
+                <div class="reveal card-frame p-8 md:p-16 rounded-[30px] md:rounded-[40px] flex flex-col items-center text-center transition-transform hover:-translate-y-2">
+                    <div class="mb-6 p-5 rounded-full bg-stone-50 text-gold">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+                            <line x1="16" x2="16" y1="2" y2="6" /><line x1="8" x2="8" y1="2" y2="6" />
+                            <line x1="3" x2="21" y1="10" y2="10" />
+                        </svg>
+                    </div>
+                    <h4 class="text-[8px] md:text-[10px] uppercase tracking-[0.5em] text-stone-400 mb-3 font-bold">The Date</h4>
+                    <p class="text-2xl md:text-5xl font-serif text-stone-800 mb-1">July 12th, 2026</p>
+                    <p class="text-base md:text-lg text-stone-500 italic">Midday Celebration at 12:00 PM</p>
                 </div>
-                <p class="text-2xl md:text-4xl font-serif mb-1 text-stone-800">July 12th, 2026</p>
-                <p class="text-base md:text-lg text-stone-600">The celebration begins at 12:00 PM</p>
-            </div>
 
-            <div
-                class="reveal p-6 md:p-10 rounded-[24px] md:rounded-[50px] bg-white border border-stone-100 shadow-sm flex flex-col items-center text-center">
-                <div class="mb-4 md:mb-6 p-3 md:p-4 rounded-full" style="background-color: #5F746A22;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="#5F746A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-                        <circle cx="12" cy="10" r="3" />
-                    </svg>
+                <div class="reveal card-frame p-8 md:p-16 rounded-[30px] md:rounded-[40px] flex flex-col items-center text-center transition-transform hover:-translate-y-2">
+                    <div class="mb-6 p-5 rounded-full bg-stone-50 text-sage-green">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                            <circle cx="12" cy="10" r="3" />
+                        </svg>
+                    </div>
+                    <h4 class="text-[8px] md:text-[10px] uppercase tracking-[0.5em] text-stone-400 mb-3 font-bold">The Venue</h4>
+                    <p class="text-2xl md:text-5xl font-serif text-stone-800 mb-1">Unity Hall</p>
+                    <p class="text-base md:text-lg text-stone-600 mb-4 font-light">2 Rhynie Drive, Montego Bay</p>
+                    <a href="https://www.google.com/maps/search/?api=1&query=2+Rhynie+Drive+Unity+Hall+Montego+Bay"
+                        target="_blank" class="text-[10px] uppercase tracking-[0.4em] font-bold text-gold hover:opacity-70 transition-opacity">
+                        View Map
+                    </a>
                 </div>
-                <p class="text-2xl md:text-4xl font-serif mb-1 text-stone-800">Unity Hall</p>
-                <p class="text-base md:text-lg text-stone-700">2 Rhynie Drive, Montego Bay</p>
-                <a href="https://www.google.com/maps/search/?api=1&query=2+Rhynie+Drive+Unity+Hall+Montego+Bay"
-                    target="_blank"
-                    class="mt-4 text-[10px] uppercase tracking-[0.3em] border-b pb-1 border-[#D4A3A3] text-[#5F746A] hover:text-[#D4A3A3] transition-colors">Get
-                    Directions</a>
             </div>
         </section>
 
@@ -252,71 +278,57 @@
         <section class="reveal py-10 px-6 max-w-3xl mx-auto text-center border-t border-stone-100">
             <h4 class="text-[10px] uppercase tracking-[0.4em] text-stone-400 font-bold mb-6">Note to Guests</h4>
             <p class="text-stone-600 italic font-light leading-relaxed">
-                In celebration of Maudeline’s love for all things bright and beautiful, we warmly invite you to join us for an afternoon
+                In celebration of Maudeline’s love for all things bright and beautiful, we warmly invite you to join us for an
+                afternoon
                 of gratitude, love, and shared laughter. Together, we will gather to honor and reflect on the beautiful legacy
                 of a truly remarkable woman. Your presence will mean so much as we remember, celebrate, and cherish her life.
             </p>
         </section>
 
-        <!-- RSVP Section -->
-        <section class="py-16 md:py-32 px-4 md:px-6" style="background-color: #5F746A08;">
-            <div class="max-w-xl mx-auto text-center">
-                <div class="reveal">
-                    <h2 class="text-3xl md:text-6xl font-serif mb-4 text-stone-800">Will you join us?</h2>
-                    <p class="text-base md:text-lg text-stone-600 italic mb-8 md:mb-12 px-4">Your presence is the only
-                        gift we require.</p>
+        <!-- RSVP & Closing -->
+        <section class="py-20 px-4 bg-stone-50/50 relative overflow-hidden">
+            <div class="max-w-2xl mx-auto text-center relative z-10">
+                <div class="reveal mb-12">
+                    <h2 class="text-4xl md:text-7xl font-serif mb-4 text-stone-800">Will You Join Us?</h2>
+                    <p class="text-base md:text-xl text-stone-500 italic px-4">Your presence is the most cherished gift of all.</p>
                 </div>
 
-                <div id="rsvp-form"
-                    class="reveal bg-white p-6 md:p-12 rounded-[30px] md:rounded-[40px] shadow-lg border border-stone-100 text-left">
-                    <div class="space-y-4 md:space-y-6">
+                <div id="rsvp-form" class="reveal card-frame p-6 md:p-16 rounded-[30px] md:rounded-[40px] text-left mx-2">
+                    <div class="space-y-6 md:space-y-8">
                         <div>
-                            <label
-                                class="block text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-2">Guest
-                                Name(s)</label>
-                            <input type="text" id="guest-name" placeholder="Enter your name"
-                                class="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-3 md:py-4 text-sm md:text-base text-stone-800">
+                            <label class="block text-[10px] font-bold uppercase tracking-[0.3em] text-stone-400 mb-2">Guest Full Name</label>
+                            <input type="text" id="guest-name" placeholder="Who will be attending?"
+                                class="w-full bg-stone-50 border-b border-stone-200 py-3 text-stone-800 focus:border-gold transition-all outline-none text-sm md:text-base">
                         </div>
                         <div>
-                            <label
-                                class="block text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-2">Message
-                                for Maudeline</label>
-                            <textarea id="guest-message" placeholder="A brief note or memory..."
-                                class="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-3 md:py-4 text-sm md:text-base text-stone-800 h-20 md:h-24"></textarea>
+                            <label class="block text-[10px] font-bold uppercase tracking-[0.3em] text-stone-400 mb-2">A Message for the Matriarch</label>
+                            <textarea id="guest-message" placeholder="A brief memory or well-wish..."
+                                class="w-full bg-stone-50 border-b border-stone-200 py-3 text-stone-800 focus:border-gold transition-all outline-none h-20 md:h-24 resize-none text-sm md:text-base"></textarea>
                         </div>
-                        <div class="pt-2">
-                            <button onclick="submitRSVP('attending')" id="btn-accept"
-                                class="w-full bg-[#4A5B53] text-white py-4 md:py-5 rounded-xl font-bold transition-transform hover:scale-[1.01] active:scale-95 shadow-md">
-                                Accept with Pleasure
-                            </button>
-                        </div>
+                        <button onclick="submitRSVP('attending')" id="btn-accept"
+                            class="w-full btn-sage text-white py-4 md:py-5 rounded-xl md:rounded-2xl font-bold uppercase tracking-[0.2em] transition-all active:scale-95 text-xs md:text-sm">
+                            Confirm Attendance
+                        </button>
                     </div>
                 </div>
 
-                <div id="rsvp-success"
-                    class="hidden bg-white p-8 md:p-12 rounded-[30px] md:rounded-[40px] shadow-xl border border-stone-100 fade-in">
-                    <p class="text-xl md:text-2xl font-serif text-stone-800 mb-2">A Sincere Thank You</p>
-                    <p class="text-[#5F746A] tracking-widest uppercase text-[10px] font-bold">Your response has been
-                        saved</p>
-                </div>
-
-                <div
-                    class="reveal mt-12 md:mt-20 flex items-center justify-center gap-3 md:gap-4 text-stone-600 text-[8px] md:text-xs tracking-[0.3em] md:tracking-[0.4em] uppercase font-bold px-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="text-[#5F746A]">
-                        <path d="M9 18V5l12-2v13" />
-                        <circle cx="6" cy="18" r="3" />
-                        <circle cx="18" cy="16" r="3" />
-                    </svg>
-                    <span>Tea, Toast, & Shared Stories</span>
+                <div id="rsvp-success" class="hidden card-frame p-10 md:p-16 rounded-[30px] md:rounded-[40px] text-center fade-in">
+                    <div class="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="text-green-600" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <p class="text-xl md:text-2xl font-serif text-stone-800 mb-2">Response Received</p>
+                    <p class="text-stone-500 font-light">We look forward to celebrating with you!</p>
                 </div>
             </div>
         </section>
 
-        <footer class="py-8 md:py-12 text-center px-6 border-t border-stone-100">
-            <p class="text-stone-600 text-[7px] md:text-[10px] tracking-[0.4em] uppercase font-bold">Maudeline Mullings
-                · 96 Years of Grace</p>
+        <footer class="py-12 text-center border-t border-stone-100">
+            <div class="flex items-center justify-center gap-4 mb-6 text-gold/30">
+                <div class="h-px w-8 bg-current"></div>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                <div class="h-px w-8 bg-current"></div>
+            </div>
+            <p class="text-stone-400 text-[8px] md:text-[10px] tracking-[0.5em] uppercase font-bold">Maudeline Mullings · Established 1930</p>
         </footer>
     </div>
 
@@ -324,14 +336,49 @@
         const supabaseUrl = 'https://ywfkkijngojdoqxunryx.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl3ZmtraWpuZ29qZG9xeHVucnl4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MTM0NjcsImV4cCI6MjA4NDA4OTQ2N30.goooK4C1g0nKIAdKUBEY14mUXMrv5dXKFhDKBMzP_JE';
 
-        // Scroll Reveal Logic
+        function createBalloons() {
+            const container = document.getElementById('balloon-container');
+            const colors = ['#E88B8B', '#F4D35E', '#4A5B53', '#C5A059', '#D4A3A3'];
+            const balloonCount = 15; // Increased count for falling effect
+
+            for (let i = 0; i < balloonCount; i++) {
+                const balloon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                balloon.setAttribute("viewBox", "0 0 50 75");
+                balloon.classList.add("floating-balloon");
+                
+                const left = Math.random() * 95;
+                const duration = 15 + Math.random() * 15; // Slower fall
+                const delay = Math.random() * 20;
+                const size = 80 + Math.random() * 100; // Much larger balloons
+
+                balloon.style.left = `${left}%`;
+                balloon.style.width = `${size}px`;
+                balloon.style.animationDuration = `${duration}s`;
+                balloon.style.animationDelay = `-${delay}s`;
+
+                balloon.innerHTML = `
+                    <defs>
+                        <radialGradient id="grad-${i}" cx="30%" cy="30%" r="50%">
+                            <stop offset="0%" style="stop-color:white;stop-opacity:0.4" />
+                            <stop offset="100%" style="stop-color:${color};stop-opacity:0.7" />
+                        </radialGradient>
+                    </defs>
+                    <path d="M25 50 C10 50 0 40 0 25 C0 10 10 0 25 0 C40 0 50 10 50 25 C50 40 40 50 25 50" fill="url(#grad-${i})" />
+                    <path d="M25 50 L23 54 L27 54 Z" fill="${color}" />
+                    <path d="M25 54 Q25 65 20 75" stroke="#ccc" fill="none" stroke-width="1.5" opacity="0.5" />
+                `;
+                container.appendChild(balloon);
+            }
+        }
+
         function handleScroll() {
             const reveals = document.querySelectorAll('.reveal, .img-reveal');
             reveals.forEach(reveal => {
                 const windowHeight = window.innerHeight;
                 const elementTop = reveal.getBoundingClientRect().top;
-                const elementVisible = 100;
-                if (elementTop < windowHeight - elementVisible) {
+                if (elementTop < windowHeight - 80) {
                     reveal.classList.add('active');
                 }
             });
@@ -354,7 +401,7 @@
             }
 
             btnAccept.disabled = true;
-            btnAccept.textContent = "Saving...";
+            btnAccept.textContent = "Processing...";
 
             try {
                 const response = await fetch(`${supabaseUrl}/rest/v1/rsvps`, {
@@ -365,20 +412,14 @@
                         'Content-Type': 'application/json',
                         'Prefer': 'return=minimal'
                     },
-                    body: JSON.stringify({
-                        name: name,
-                        message: message,
-                        status: status
-                    })
+                    body: JSON.stringify({ name, message, status })
                 });
 
-                if (!response.ok) throw new Error('Server error');
-
+                if (!response.ok) throw new Error('Error saving');
                 document.getElementById('rsvp-form').classList.add('hidden');
                 document.getElementById('rsvp-success').classList.remove('hidden');
             } catch (err) {
-                console.error('RSVP error:', err);
-                btnAccept.textContent = "Error. Retry?";
+                btnAccept.textContent = "Error - Try Again";
                 btnAccept.disabled = false;
             }
         }
@@ -390,8 +431,9 @@
             setTimeout(() => {
                 overlay.style.display = 'none';
                 content.style.display = 'block';
+                createBalloons();
                 window.scrollTo(0, 0);
-                handleScroll(); // Trigger initial check for hero content
+                handleScroll();
             }, 700);
         }
 
@@ -400,5 +442,4 @@
         }
     </script>
 </body>
-
 </html>
