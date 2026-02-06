@@ -502,8 +502,7 @@
                 const content = document.getElementById('main-content');
 
                 const music = document.getElementById('bg-music');
-                music.src =
-                    "https://www.youtube.com/embed/81a7V0MhJpg?autoplay=1&loop=1&playlist=81a7V0MhJpg";
+                music.play();
 
                 overlay.style.opacity = '0';
                 setTimeout(() => {
@@ -513,15 +512,17 @@
                     window.scrollTo(0, 0);
                     handleScroll();
                 }, 700);
-        }
+}
 
         function scrollToNext() {
             document.getElementById('portrait').scrollIntoView({ behavior: 'smooth' });
         }
     </script>
     <!-- Background Music -->
-    <iframe id="bg-music" src="" allow="autoplay" style="display:none;">
-    </iframe>
+<audio id="bg-music" loop playsinline preload="auto">
+    <source src="Songs/weve-come-this-far-by-faith.mp3" type="audio/mpeg">
+</audio>
+
 
 </body>
 
