@@ -498,22 +498,31 @@
         }
 
         function openInvitation() {
-            const overlay = document.getElementById('envelope-overlay');
-            const content = document.getElementById('main-content');
-            overlay.style.opacity = '0';
-            setTimeout(() => {
-                overlay.style.display = 'none';
-                content.style.display = 'block';
-                createBalloons();
-                window.scrollTo(0, 0);
-                handleScroll();
-            }, 700);
+                const overlay = document.getElementById('envelope-overlay');
+                const content = document.getElementById('main-content');
+
+                const music = document.getElementById('bg-music');
+                music.src =
+                    "https://www.youtube.com/embed/81a7V0MhJpg?autoplay=1&loop=1&playlist=81a7V0MhJpg";
+
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    content.style.display = 'block';
+                    createBalloons();
+                    window.scrollTo(0, 0);
+                    handleScroll();
+                }, 700);
         }
 
         function scrollToNext() {
             document.getElementById('portrait').scrollIntoView({ behavior: 'smooth' });
         }
     </script>
+    <!-- Background Music -->
+    <iframe id="bg-music" src="" allow="autoplay" style="display:none;">
+    </iframe>
+
 </body>
 
 </html>
